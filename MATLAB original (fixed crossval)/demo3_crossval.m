@@ -1,10 +1,10 @@
 clear all;close all;
 verbose = 1;
 
-TT1=importDelta('TireAssemblyFT_1.csv');
-TT2=importDelta('TireAssemblyFT_2.csv');
-TT3=importDelta('TireAssemblyFT_3.csv');
-TT4=importDelta('TireAssemblyFT_4.csv');
+TT1=importDelta('../data/TireAssemblyFT_1.csv');
+TT2=importDelta('../data/TireAssemblyFT_2.csv');
+TT3=importDelta('../data/TireAssemblyFT_3.csv');
+TT4=importDelta('../data/TireAssemblyFT_4.csv');
 TT={TT1,TT2,TT3,TT4};
 
 

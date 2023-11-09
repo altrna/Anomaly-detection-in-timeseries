@@ -1,6 +1,6 @@
 clear all;close all;
-TT1=importDelta('TireAssemblyFT_2.csv');
-TT2=importDelta('TireAssemblyFT_3.csv');
+TT1=importDelta('../data/TireAssemblyFT_2.csv');
+TT2=importDelta('../data/TireAssemblyFT_3.csv');
 
 [dist,ix,iy]=dtw(TT1.Variables', TT2.Variables')
 
