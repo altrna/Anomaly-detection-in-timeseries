@@ -5,12 +5,7 @@ from utils import *
 from time import sleep
 
 
-
-DATA = ["TireAssemblyFT disc.csv", "TireAssemblyFT_1.csv", "TireAssemblyFT_2.csv", "TireAssemblyFT_3.csv", "TireAssemblyFT_4.csv"]
-variable1 = "HMI_User.FT_Data.Force_X"
-variable2 = "HMI_User.FT_Data.Force_Y"
-variable3 = "HMI_User.FT_Data.Force_Z"
-variable4 = "HMI_User.FT_Data.Force_Y"
+DATA = ["./data/TireAssemblyFT disc.csv", "../data/TireAssemblyFT_1.csv", "../data/TireAssemblyFT_2.csv", "../data/TireAssemblyFT_3.csv", "../data/TireAssemblyFT_4.csv"]
 
 def load_data_from_data_pair(data_pair : tuple):
     """Loads data from files specified by 'data_pair' tuple
