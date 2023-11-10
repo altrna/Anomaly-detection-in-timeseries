@@ -1,0 +1,4 @@
+https://www.mdpi.com/2079-9292/10/23/2963
+
+M. Van Damme, P. Beyl, B. Vanderborght, V. Grosu, R. Van Ham, I. Vanderniepen, A. Matthys, D. Lefeber - Estimating Robot End-Effector Force from Noisy Actuator Torque Measurements
+
