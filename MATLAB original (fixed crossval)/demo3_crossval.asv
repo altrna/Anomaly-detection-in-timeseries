@@ -9,11 +9,15 @@ TT={TT1,TT2,TT3,TT4};
 
 
 TR=TT([2:4])
+%%
 TRall=[];for i=1:length(TR),TRall=[TRall;TR{i}.Variables];end
 TRall
+%%
 mn=mean(TRall)
 st=std(TRall)
+%%
 for i=1:length(TR),TR{i}.Variables=(TR{i}.Variables-mn)./repmat(st,size(TR{i},1),1);end
+%%
 TS=TT{1};
 TS.Variables=(TS.Variables-mn)./repmat(st,size(TS,1),1);
 
@@ -28,7 +32,7 @@ for step=100:50:n
     TT1 = TSpart;TT2 = TR{1}(1:iopt,:);
     
     [dist,ix,iy]=dtw(TT1.Variables', TT2.Variables');
-    dist
+    
     %DIST = [DIST dist/length(ix)];
     DIST = [DIST  sum(sqrt(sum((TT1(ix(end),:).Variables-TT2(iy(end),:).Variables).^2,2)))];
     I = [I iopt];    
