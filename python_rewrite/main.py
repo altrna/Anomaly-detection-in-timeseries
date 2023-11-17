@@ -5,7 +5,7 @@ from utils import *
 from time import sleep
 from scipy.signal import correlate
 
-DATA = ["./data/TireAssemblyFT disc.csv", "../data/TireAssemblyFT_1.csv", "../data/TireAssemblyFT_2.csv", "../data/TireAssemblyFT_3.csv", "../data/TireAssemblyFT_4.csv"]
+DATA = ["./data/TireAssemblyFT_disc.csv", "../data/TireAssemblyFT_1.csv", "../data/TireAssemblyFT_2.csv", "../data/TireAssemblyFT_3.csv", "../data/TireAssemblyFT_4.csv"]
 
 def load_data_from_tuple(data_to_load : tuple):
     """Loads data from files specified by 'data_pair' tuple
@@ -107,7 +107,7 @@ def plot_dtw_vec(time_series1, time_series2, paired_indices, distance, axes = pl
     unique_indices_l = np.unique(paired_indices[:, l], return_index=True)[1]
     unique_indices_long = sorted(unique_indices_l)
     axes.plot(leading[paired_indices[unique_indices_long, l], time], leading[paired_indices[unique_indices_long, l], variable], label='Line Plot', linewidth=1, color="black")
-    axes.plot(short[paired_indices[unique_indices_short, l], time], short[paired_indices[unique_indices_short, s], variable], label='Line Plot', linewidth=1, color = "red")
+    axes.plot(leading[paired_indices[unique_indices_short, l], time], short[paired_indices[unique_indices_short, s], variable], label='Line Plot', linewidth=1, color = "red")
     return leading
 
 def compare_signals(valmatrix1, valmatrix2, start_idx = None, stop_idx = None, time_shift = None, new_figure = False, fast = True, radius = 5, vectorized = True):
@@ -161,7 +161,7 @@ def find_closest_part(signal_part, signal_whole, last_i = 0, step_size = 50):
     n = np.shape(signal_whole)[0]
     dist = []
     length = []
-    for i in range(max(n//20, last_i + step_size//2), n, max(n//20, 1)):
+    for i in range(max(n//20, last_i + step_size//2), n, max(n//20, 1)):#last_i + step_size//2
         cur_dist, _ = dtw(signal_part[:, 2:], signal_whole[:i, 2:])
         dist.append(cur_dist)
         length.append(i)
@@ -174,7 +174,7 @@ def find_closest_part(signal_part, signal_whole, last_i = 0, step_size = 50):
     new_last_i = length[min_idx]
     return dist, new_last_i
     
-def cross_validate_signals(signal1, signals, step_size = 50):
+def cross_validate_signals(signal1, signals, s1, step_size = 50, chosen_int = -1):
     """
     1. randomly selects a signal from dataset, normalizes it and by certain step size compares it to the tested signal
     
@@ -197,8 +197,9 @@ def cross_validate_signals(signal1, signals, step_size = 50):
     signal1 = normalize_signal(signal1)
     for s in range(len(signals)):
         signals[s] = normalize_signal(signals[s], mean = mean_, sigma = sigma_)
-    chosen_int = np.random.randint(0, len(signals))
-   
+    if chosen_int < 0:
+        chosen_int = np.random.randint(0, len(signals))
+    print(f"To signal: {chosen_int if chosen_int < s1 else chosen_int + 1}")
     chosen = signals[chosen_int]
     distances = []
     I = [0]
@@ -210,7 +211,7 @@ def cross_validate_signals(signal1, signals, step_size = 50):
         signal1_part = signal1[:i, :]
         iopt = find_closest_part(signal1_part, chosen, last_i=I[-1], step_size=step_size)[1]
         signal2_part = chosen[:iopt, :]
-        dist, paired = dtw(signal1_part, signal2_part)
+        dist, paired = dtw(signal1_part[:, 2:], signal2_part[:, 2:])
         paired = np.array(paired)
         distances.append(dist)
         I.append(iopt)
@@ -220,7 +221,7 @@ def cross_validate_signals(signal1, signals, step_size = 50):
             axes[j + n].plot(signal1_part[:, 1], signal1_part[ : , j + 2], color = "red", linewidth = 1)
             axes[j + n].plot(signal2_part[:, 1], signal2_part[ : , j + 2], color = "black", linewidth = 1)
             axes[j + n + 1].clear()
-            plot_dtw_vec(signal1_part, chosen, paired, dist, axes[j + n + 1], variable=j+2)
+            plot_dtw_vec(signal1_part, signal2_part, paired, dist, axes[j + n + 1], variable=j+2)
             n += 1
         plt.pause(0.05)
         plt.show()

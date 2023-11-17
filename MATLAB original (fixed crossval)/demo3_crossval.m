@@ -7,7 +7,7 @@ TT3=importDelta('../data/TireAssemblyFT_3.csv');
 TT4=importDelta('../data/TireAssemblyFT_4.csv');
 TT={TT1,TT2,TT3,TT4};
 
-
+idx = 3
 TR=TT([2:4])
 TRall=[];for i=1:length(TR),TRall=[TRall;TR{i}.Variables];end
 TRall
@@ -23,9 +23,9 @@ for step=100:50:n
 
     TSpart = TS(1:step,:);
     
-    [~,iopt] = findClosestPart(TSpart,TR{1});
+    [~,iopt] = findClosestPart(TSpart,TR{idx});
     
-    TT1 = TSpart;TT2 = TR{1}(1:iopt,:);
+    TT1 = TSpart;TT2 = TR{idx}(1:iopt,:);
     
     [dist,ix,iy]=dtw(TT1.Variables', TT2.Variables');
     dist
